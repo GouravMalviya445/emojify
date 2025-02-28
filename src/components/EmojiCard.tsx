@@ -1,6 +1,7 @@
 "use client";
 import { UpdateVote } from "./UpdateVote";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion"
 
 interface EmojiCardProps {
   emojiData: {
@@ -21,7 +22,11 @@ export function EmojiCard({ emojiData, view }: EmojiCardProps) {
   // console.log(emojiData)
   
   return (
-    <div className={`${view === "grid" ? "w-64 flex-col justify-between" : "w-64 h-24 justify-between"} flex hover:scale-105 hover:shadow-xl transition duration-300 ease-in-out items-center overflow-hidden rounded-lg dark:text-white dark:bg-gray-800`}>
+    <motion.div
+      animate={{scale: 1, opacity: 1}}
+      initial={{ scale: 0.8, opacity: 0 }}
+    >
+<div className={`${view === "grid" ? "w-64 flex-col justify-between" : "w-64 h-24 justify-between"} flex hover:scale-105 hover:shadow-xl transition duration-300 ease-in-out items-center overflow-hidden rounded-lg dark:text-white dark:bg-gray-800`}>
       <div
         style={{ backgroundColor: `${emojiData.bgColor}` }}
         className={`${view === "grid" ? "w-64 h-40 text-7xl" : "w-20 h-full text-3xl"} flex justify-center items-center`}
@@ -48,5 +53,8 @@ export function EmojiCard({ emojiData, view }: EmojiCardProps) {
         <UpdateVote emojiId={emojiData._id} upVote={emojiData.upVote} downVote={emojiData.downVote} view={view}/>
       </div>
     </div>
+    </motion.div>
+
+    
   )
 }

@@ -18,9 +18,7 @@ const defaultClasses = "cursor-pointer"
 export function Button({children, className = "", variant = "primary", ...props}: ButtonProps) {
     return (
       <button {...props} className={`
-        ${variantClasses[variant]}
-        ${defaultClasses}
-        ${className}
+        ${variantClasses[variant]} ${defaultClasses} ${className}
       `}>
             {children}
         </button>
