@@ -43,7 +43,7 @@ export default function Home() {
     fetchEmojis();
   }, [router])
 
-  const filteredEmojis = emojis.filter((emoji) => emoji.example.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredEmojis = emojis.filter((emoji) => emoji.example.toLowerCase().includes(searchQuery.toLowerCase()) || emoji.emoji_code.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
     <main>
