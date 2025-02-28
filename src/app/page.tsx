@@ -45,7 +45,7 @@ export default function Home() {
 
   const filteredEmojis = emojis.filter((emoji) => emoji.example.toLowerCase().includes(searchQuery.toLowerCase()) || emoji.emoji_code.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  const topVotedEmojis = filteredEmojis.sort((a, b) => b.upVote - a.upVote || b.downVote - a.downVote);
+  const topVotedEmojis = filteredEmojis.sort((a, b) => b.upVote - a.upVote || a.downVote - b.downVote);
 
   return (
     <main>
