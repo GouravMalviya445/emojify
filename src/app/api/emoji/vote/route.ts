@@ -3,7 +3,7 @@ import { EmojiModel } from "@/model/EmojiModel";
 import { ApiResponse } from "@/utils/ApiResponse";
 import { NextRequest } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   await connectDB();
   const { upVote, downVote, emojiId } = await req.json();
   

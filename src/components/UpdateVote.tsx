@@ -14,9 +14,13 @@ interface UpdateVoteProps {
   emojiId: string
 }
 
+type TVote = {
+  upVote: number;
+  downVote: number;
+}
 export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps) {
   
-  const [vote, setVote] = useState({
+  const [vote, setVote] = useState<TVote>({
     upVote,
     downVote
   });
@@ -24,7 +28,7 @@ export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps)
   const incrementUpVote = debounce(async () => {
     try {
       const res = await fetch("/api/emoji/vote", {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
           upVote: true,
           emojiId
@@ -32,7 +36,7 @@ export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps)
       });
       const data = await res.json()
       if (data.success) {
-        setVote(pre => ({...pre, upVote: pre.upVote + 1}))
+        setVote((pre: TVote) => ({...pre, upVote: pre.upVote + 1}))
         toast.success("This emoji is getting popular")
       }
       
@@ -45,7 +49,7 @@ export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps)
   const incrementDownVote = debounce(async () => {
     try {
       const res = await fetch("/api/emoji/vote", {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
           downVote: true,
           emojiId
@@ -53,7 +57,7 @@ export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps)
       });
       const data = await res.json()
       if (data.success) {
-        setVote(pre => ({ ...pre, downVote: pre.downVote + 1 }))
+        setVote((pre: TVote) => ({ ...pre, downVote: pre.downVote + 1 }))
         toast("This emoji is facing downfall")
       }
       
