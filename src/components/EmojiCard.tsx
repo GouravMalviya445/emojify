@@ -18,7 +18,7 @@ interface EmojiCardProps {
 }
 
 export function EmojiCard({ emojiData, view }: EmojiCardProps) {
-  console.log(emojiData)
+  // console.log(emojiData)
   
   return (
     <div className={`${view === "grid" ? "w-64 flex-col justify-between" : "w-64 h-24 justify-between"} flex hover:scale-105 hover:shadow-xl transition duration-300 ease-in-out items-center overflow-hidden rounded-lg dark:text-white dark:bg-gray-800`}>

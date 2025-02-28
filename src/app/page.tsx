@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ChangeView } from "@/components/ChangeView";
 import { toast, ToastContainer } from "react-toastify";
 import { Footer } from "@/components/Footer";
+import { useRouter } from "next/router";
 
 interface IEmoji {
   _id: string;
@@ -24,20 +25,23 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [view, setView] = useState<"grid" | "flex">("grid"); 
   const [emojis, setEmojis] = useState<IEmoji[]>([]);
+  const router = useRouter();
 
-  useEffect(() => { 
-      fetch("/api/emoji")
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setEmojis(data.data.emojis)
-          }
-        })
-        .catch(err => {
-          toast.error("Something went wrong went fetching emojis")
-          console.log("Error fetching emojis: ", err);
-        })
-  }, [])
+  useEffect(() => {
+    const fetchEmojis = async () => {
+      try {
+        const res = await fetch("/api/emoji");
+        const data = await res.json();
+        if (data.success) {
+          setEmojis(data.data.emojis)
+        }
+      } catch (err) {
+        toast.error("Something went wrong went fetching emojis")
+        console.log("Error fetching emojis: ", err);
+      }
+    }
+    fetchEmojis();
+  }, [router])
 
   const filteredEmojis = emojis.filter((emoji) => emoji.example.toLowerCase().includes(searchQuery.toLowerCase()));
 
