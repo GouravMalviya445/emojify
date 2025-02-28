@@ -1,101 +1,70 @@
-import Image from "next/image";
+"use client";
+import { EmojiCard } from "@/components/EmojiCard";
+import { Container } from "@/container/container";
+import { Header } from "@/components/Header";
+import { SearchBar } from "@/components/SearchBar";
+import { useEffect, useState } from "react";
+import { ChangeView } from "@/components/ChangeView";
+import { toast, ToastContainer } from "react-toastify";
+import { Footer } from "@/components/Footer";
+
+interface IEmoji {
+  _id: string;
+  emoji: string;
+  emoji_code: string;
+  type: string;
+  example: string;
+  tags: string[];
+  bgColor: string;
+  upVote: number;
+  downVote: number;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [searchQuery, setSearchQuery] = useState("");
+  const [view, setView] = useState<"grid" | "flex">("grid"); 
+  const [emojis, setEmojis] = useState<IEmoji[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => { 
+      fetch("/api/emoji")
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setEmojis(data.data.emojis)
+          }
+        })
+        .catch(err => {
+          toast.error("Something went wrong went fetching emojis")
+          console.log("Error fetching emojis: ", err);
+        })
+  }, [])
+
+  const filteredEmojis = emojis.filter((emoji) => emoji.example.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  return (
+    <main>
+      <Header/>
+      <Container>
+        <div className="flex items-center justify-around my-10 px-4">
+          {/* search query */}
+          <SearchBar
+            className="text-white w-2/3 sm:w-1/3"
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            placeholder="Search commits"
+          />
+          <ChangeView setView={setView} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        
+        <div className="max-w-6xl flex items-center gap-10 flex-wrap mx-16 sm:mx-auto ">
+          {!filteredEmojis.length && <div className="h-40 text-white text-2xl">No emojis found for "{searchQuery}"</div>}
+          {filteredEmojis.map((emoji) => (
+            <EmojiCard key={emoji._id} emojiData={emoji} view={view} />
+          ))}
+        </div>
+      </Container>
+      <Footer/>
+      <ToastContainer position="top-right" autoClose={1500} theme="dark"/>
+    </main>
   );
 }
