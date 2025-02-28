@@ -8,6 +8,7 @@ import { ChangeView } from "@/components/ChangeView";
 import { toast, ToastContainer } from "react-toastify";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation";
+import { Loading } from "@/components/Loading";
 
 interface IEmoji {
   _id: string;
@@ -26,16 +27,20 @@ export default function Home() {
   const [view, setView] = useState<"grid" | "flex">("grid"); 
   const [emojis, setEmojis] = useState<IEmoji[]>([]);
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEmojis = async () => {
+      setLoading(true);
       try {
         const res = await fetch("/api/emoji");
         const data = await res.json();
         if (data.success) {
           setEmojis(data.data.emojis)
+          setLoading(false);
         }
       } catch (err) {
+        setLoading(false);
         toast.error("Something went wrong went fetching emojis")
         console.log("Error fetching emojis: ", err);
       }
@@ -62,12 +67,13 @@ export default function Home() {
           <ChangeView setView={setView} />
         </div>
         
-        <div className="max-w-6xl flex items-center gap-10 flex-wrap mx-16 sm:mx-auto ">
-          {!filteredEmojis.length && <div className="h-40 text-white text-2xl">No emojis found for {`"${searchQuery}"`}</div>}
+        {loading ? <div className="h-40 grid place-content-center w-full"><Loading height={30} width={30}/></div> :
+          <div className="max-w-6xl flex items-center gap-10 flex-wrap mx-16 sm:mx-auto ">
+          {!filteredEmojis.length && <div className="h-40 text-white text-center text-2xl">No emojis found for {`"${searchQuery}"`}</div>}
           {topVotedEmojis.map((emoji) => (
             <EmojiCard key={emoji._id} emojiData={emoji} view={view} />
           ))}
-        </div>
+        </div>}
       </Container>
       <Footer/>
       <ToastContainer position="top-right" autoClose={1500} theme="dark"/>
