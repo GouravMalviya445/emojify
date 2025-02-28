@@ -1,11 +1,10 @@
 import { EmojiModel } from "@/model/EmojiModel";
 import { connectDB } from "@/db";
-import { NextRequest, NextResponse } from "next/server";
 import { ApiResponse } from "@/utils/ApiResponse";
 
 
 // get all the Emojis
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET() {
   await connectDB();
   try {
     const emojis = await EmojiModel.find();

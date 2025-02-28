@@ -1,12 +1,10 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { HeroSection } from "./HeroSection";
 import { Navbar } from "./NavBar";
 
 
 export function Header({ className }: { className?: string }) {
-  const router = useRouter();
-  return <header>
+  return <header className={className}>
     <Navbar/>
     <HeroSection/>
   </header>

@@ -36,8 +36,8 @@ export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps)
         toast.success("This emoji is getting popular")
       }
       
-    } catch (err: any) {
-      toast.error(err.message || 'Something is wrong in upvote')
+    } catch (err) {
+      toast.error('Something is wrong in upvote')
       console.log("Error incrementing upvote: ", err);
     }
   }, 500)
@@ -57,8 +57,8 @@ export function UpdateVote({ upVote, downVote, view, emojiId }: UpdateVoteProps)
         toast("This emoji is facing downfall")
       }
       
-    } catch (err: any) {
-      toast.error(err.message || 'Something is wrong in downvote')
+    } catch (err) {
+      toast.error('Something is wrong in downvote')
       console.log("Error incrementing downvote: ", err);
     }
   }, 500);

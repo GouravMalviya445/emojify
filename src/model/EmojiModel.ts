@@ -22,5 +22,4 @@ const EmojiSchema: mongoose.Schema<IEmoji> = new mongoose.Schema({
   downVote: { type: Number, default: 0 },
 })
 
-// @ts-ignore
 export const EmojiModel = (mongoose.models.Emoji as mongoose.Model<IEmoji>) || mongoose.model<IEmoji>("Emoji", EmojiSchema);

@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         
         <div className="max-w-6xl flex items-center gap-10 flex-wrap mx-16 sm:mx-auto ">
-          {!filteredEmojis.length && <div className="h-40 text-white text-2xl">No emojis found for "{searchQuery}"</div>}
+          {!filteredEmojis.length && <div className="h-40 text-white text-2xl">No emojis found for {`"${searchQuery}"`}</div>}
           {filteredEmojis.map((emoji) => (
             <EmojiCard key={emoji._id} emojiData={emoji} view={view} />
           ))}

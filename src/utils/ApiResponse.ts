@@ -4,15 +4,15 @@ interface IApiResponse {
   statusCode: number;
   message: string;
   success?: boolean;
-  data?: any;
-  error?: any;
+  data?: object | null;
+  error?: object | null;
 }
 
 export function ApiResponse(
   statusCode: number,
   message: string,
-  data?: any,
-  error?: any,
+  data?: object | null,
+  error?: object | null,
 ) {
   const response: IApiResponse = {
     statusCode,
