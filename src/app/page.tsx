@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { ChangeView } from "@/components/ChangeView";
 import { toast, ToastContainer } from "react-toastify";
 import { Footer } from "@/components/Footer";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface IEmoji {
   _id: string;
