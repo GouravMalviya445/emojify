@@ -3,7 +3,7 @@
 // import { useRouter } from "next/navigation";
 
 export function Navbar({}) {
-  const router = useRouter();
+  // const router = useRouter();
   return (
     <nav className="flex mx-auto max-w-6xl items-center py-4 px-3 justify-between">
       <h3 className="text-xl text-white font-semibold">Emojify 👷</h3>
